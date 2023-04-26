@@ -1,1 +1,11 @@
-cat access.log | grep apk | awk '{print $1 }'| sort -n | uniq -c | sort -rn | head  # Lista las principales 10 IPs
+# Lista las principales 10 IPs
+cat access.log | grep apk | awk '{print $1 }'| sort -n | uniq -c | sort -rn | head  
+
+
+#Muestra las IPs de cada usuario que solicite la página índice ordenadas por el número de visitas:
+awk -F'[ "]+' '$7 == "/" { ipcount[$1]++ } END { for (i in ipcount) { printf "%15s - %d\n", i, ipcount[i] } }' access-log
+
+
+# mostraría qué páginas fueron accedidas por un usuario desde una IP específica:
+awk -F'[ "]+' '$1 == "1.2.3.4" { pagecount[$7]++ } END { for (i in pagecount) { printf "%15s - %d\n", i, pagecount[i] } }' access-log
+
