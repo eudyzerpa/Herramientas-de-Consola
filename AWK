@@ -1,0 +1,1 @@
+cat access.log | grep apk | awk '{print $1 }'| sort -n | uniq -c | sort -rn | head  # Lista las principales 10 IPs
