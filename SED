@@ -1,0 +1,2 @@
+# Lee un archivo y borra un patron
+sed 's/\patron a borrar//' archivo.txt
