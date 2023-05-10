@@ -186,7 +186,7 @@ echo "$FECHA-FIN-DEL-PROCESO-script_descomprimir_desencriptar_archivos.sh"
 
 ssh $RUTA_SERVIDOR_BD $SH_BD
 
-
+---------------------------------------------------------------------------------------------------------------------------
 
 # config.ini invocado al principio del Script
 
@@ -213,3 +213,6 @@ SH_BD='/opt/archivo/miapp/sh/consolida.sh'
 RESPALDO=/opt/alsegura/cadenas/respaldo/
 
 CLAVES=/opt/alsegura/cadenas/miapp/llaves/
+
+
+---------------------------------------------------------------------------------------------------------------------------
