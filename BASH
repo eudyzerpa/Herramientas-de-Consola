@@ -185,3 +185,31 @@ FECHA=$(date +%Y-%m-%d-%H:%M:%S)
 echo "$FECHA-FIN-DEL-PROCESO-script_descomprimir_desencriptar_archivos.sh"
 
 ssh $RUTA_SERVIDOR_BD $SH_BD
+
+
+
+# config.ini invocado al principio del Script
+
+DIRECTORIO_COMPRIMIDOS="/opt/alsegura/cadenas/enviado/"
+
+EXTENSION_A_BUSCAR="*.txt"
+
+DIRECTORIO_ARCHIVO_EXTENSION=$DIRECTORIO_COMPRIMIDOS$EXTENSION_A_BUSCAR
+
+DIRECTORIO_DESTINO=/opt/alsegura/cadenas/miapp/procesos/
+
+PRIMER_TIEMPO=120
+
+SEGU_TIEMPO=60
+
+DIRECTORIO_ORIGEN=/opt/alsegura/cadenas/miapp/procesos/
+
+RUTA_SERVIDOR_BD=ssas@192.168.1.109
+
+ARCHIVO_BD=:/opt/archivo/enviado/
+
+SH_BD='/opt/archivo/miapp/sh/consolida.sh'
+
+RESPALDO=/opt/alsegura/cadenas/respaldo/
+
+CLAVES=/opt/alsegura/cadenas/miapp/llaves/
