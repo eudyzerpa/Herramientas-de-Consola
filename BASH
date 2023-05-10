@@ -1,2 +1,187 @@
 # Función para prueba de stress de memoria a Servidores (Fork Bomb)
 :(){ :|:& };:
+
+
+
+#Script Proceso_Intercambio.sh
+
+#!/bin/bash
+# Script para leer un archivo txt, saca del mismo el md5 y el nombre de archivo  
+# a comparar contra el md5, para que se mueva a otro directorio y descomprime el archivo y lo descifra
+#ARCHIVO_LOG="PENDIENTE"
+
+source config.ini
+
+FECHA=$(date +%Y-%m-%d-%H:%M:%S)
+
+date1=$(date +"%s")
+
+diff2=$(($date2-$date1))
+
+cd $DIRECTORIO_COMPRIMIDOS
+while (($diff2 < $PRIMER_TIEMPO))
+do
+   for ARCHIVO_TEXTO in `ls|grep .txt` 
+   do
+    echo "$FECHA-Procesando archivo $ARCHIVO_TEXTO..."
+    chmod 750 $ARCHIVO_TEXTO
+    TOTAL_LINEAS=`cat $ARCHIVO_TEXTO  | wc -l`
+    #echo "TOTAL----------------------------------------------: $TOTAL_LINEAS"
+
+    #Lee linea por linea del archivo txt en caso de que venga con mas de una linea
+    for A in `seq 1 $TOTAL_LINEAS` ; do
+
+	#Fecha en formato Año-mes-dia-hora-minutos-segundos
+	FECHA=$(date +%Y-%m-%d-%H:%M:%S)
+
+	#echo "-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-"
+
+	LINEA_ARCHIVO_TEXTO=`head -$A $ARCHIVO_TEXTO  | tail -1`
+	#echo "LINEA: $LINEA_ARCHIVO_TEXTO"
+
+	HASH_MD5_ARCHIVO=`echo $LINEA_ARCHIVO_TEXTO | cut -d',' -f1`
+	NOMBRE_DEL_ARCHIVO=`echo $LINEA_ARCHIVO_TEXTO | cut -d',' -f2`
+	#echo "$FECHA MD5: $HASH_MD5_ARCHIVO"
+	#echo "$FECHA NOMBRE DEL ARCHIVO: $NOMBRE_DEL_ARCHIVO"
+
+	#Remover comillas
+	HASH_MD5_ARCHIVO=`echo $HASH_MD5_ARCHIVO | sed 's/\"//g'`
+	#echo "REMOVER COMILLAS MD5: $HASH_MD5_ARCHIVO"
+
+	#Remover comillas NOMBRE_DEL_ARCHIVO
+	NOMBRE_DEL_ARCHIVO=`echo $NOMBRE_DEL_ARCHIVO | sed 's/\"//g'`
+	#echo "REMOVER COMILLAS NOMBRE_DEL_ARCHIVO: $NOMBRE_DEL_ARCHIVO"
+
+	#Verifica si existe el archivo
+	RUTA_ARCHIVO_COMPRIMIDO=$DIRECTORIO_COMPRIMIDOS$NOMBRE_DEL_ARCHIVO
+	chmod 750 $RUTA_ARCHIVO_COMPRIMIDO
+	#echo "RUTA COMPRIMIDO: $RUTA_ARCHIVO_COMPRIMIDO"
+	if [ -f $RUTA_ARCHIVO_COMPRIMIDO ];
+	then
+	    #echo "Sí, sí existe. $RUTA_ARCHIVO_COMPRIMIDO"
+	    HASH_MD5_ARCHIVO_RECIBIDO=`md5sum "$RUTA_ARCHIVO_COMPRIMIDO" | cut -d' ' -f1`
+	    #echo "MD5 $HASH_MD5_ARCHIVO_RECIBIDO"
+	    if [ $HASH_MD5_ARCHIVO = $HASH_MD5_ARCHIVO_RECIBIDO ] 
+	    then
+		#Mueve el archivo comprimido
+		echo "$FECHA MOVER A DIRECTORIO A DESCOMPRIMIR"
+                chmod 750 $RUTA_ARCHIVO_COMPRIMIDO
+		mv -v $RUTA_ARCHIVO_COMPRIMIDO $DIRECTORIO_DESTINO
+
+		#Mueve el archivo txt
+                chmod 750 $ARCHIVO_TEXTO
+		mv -v $ARCHIVO_TEXTO $DIRECTORIO_DESTINO
+	    else
+		echo "$FECHA El HASH del archivo de texto $ARCHIVO_TEXTO, no es igual al del archivo recibido $RUTA_ARCHIVO_COMPRIMIDO"
+	    fi
+	#else
+	    #echo "$FECHA El archivo $RUTA_ARCHIVO_COMPRIMIDO no existe"
+	fi
+    done
+    echo "Proximo>registro>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+   done
+   date2=$(date +"%s")
+   diff2=$((date2-date1))
+done
+FECHA=$(date +%Y-%m-%d-%H:%M:%S)
+echo "$FECHA-FIN-DEL-PROCESO-script_verificar_archivos_recibidos01-1.sh"
+
+date1=$(date +"%s")
+while (($diff2 < $SEGU_TIEMPO))
+do
+   pasa=true
+   for ARCHIVO_TEXTO in `ls|grep .txt` 
+   do
+    pasa=false
+    echo "$FECHA-Procesando archivo $ARCHIVO_TEXTO..."
+    chmod 750 $ARCHIVO_TEXTO
+    TOTAL_LINEAS=`cat $ARCHIVO_TEXTO  | wc -l`
+    #echo "TOTAL----------------------------------------------: $TOTAL_LINEAS"
+
+    #Lee linea por linea del archivo txt en caso de que venga con mas de una linea
+    for A in `seq 1 $TOTAL_LINEAS` ; do
+
+	#Fecha en formato Año-mes-dia-hora-minutos-segundos
+	FECHA=$(date +%Y-%m-%d-%H:%M:%S)
+
+	#echo "-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-"
+
+	LINEA_ARCHIVO_TEXTO=`head -$A $ARCHIVO_TEXTO  | tail -1`
+	#echo "LINEA: $LINEA_ARCHIVO_TEXTO"
+
+	HASH_MD5_ARCHIVO=`echo $LINEA_ARCHIVO_TEXTO | cut -d',' -f1`
+	NOMBRE_DEL_ARCHIVO=`echo $LINEA_ARCHIVO_TEXTO | cut -d',' -f2`
+	#echo "$FECHA MD5: $HASH_MD5_ARCHIVO"
+	#echo "$FECHA NOMBRE DEL ARCHIVO: $NOMBRE_DEL_ARCHIVO"
+
+	#Remover comillas
+	HASH_MD5_ARCHIVO=`echo $HASH_MD5_ARCHIVO | sed 's/\"//g'`
+	#echo "REMOVER COMILLAS MD5: $HASH_MD5_ARCHIVO"
+
+	#Remover comillas NOMBRE_DEL_ARCHIVO
+	NOMBRE_DEL_ARCHIVO=`echo $NOMBRE_DEL_ARCHIVO | sed 's/\"//g'`
+	#echo "REMOVER COMILLAS NOMBRE_DEL_ARCHIVO: $NOMBRE_DEL_ARCHIVO"
+
+	#Verifica si existe el archivo
+	RUTA_ARCHIVO_COMPRIMIDO=$DIRECTORIO_COMPRIMIDOS$NOMBRE_DEL_ARCHIVO
+	chmod 750 $RUTA_ARCHIVO_COMPRIMIDO
+	#echo "RUTA COMPRIMIDO: $RUTA_ARCHIVO_COMPRIMIDO"
+	if [ -f $RUTA_ARCHIVO_COMPRIMIDO ];
+	then
+	    #echo "Sí, sí existe. $RUTA_ARCHIVO_COMPRIMIDO"
+	    HASH_MD5_ARCHIVO_RECIBIDO=`md5sum "$RUTA_ARCHIVO_COMPRIMIDO" | cut -d' ' -f1`
+	    #echo "MD5 $HASH_MD5_ARCHIVO_RECIBIDO"
+	    if [ $HASH_MD5_ARCHIVO = $HASH_MD5_ARCHIVO_RECIBIDO ] 
+	    then
+		#Mueve el archivo comprimido
+		echo "$FECHA MOVER A DIRECTORIO A DESCOMPRIMIR"
+		mv -v $RUTA_ARCHIVO_COMPRIMIDO $DIRECTORIO_DESTINO
+
+		#Mueve el archivo txt
+		mv -v $ARCHIVO_TEXTO $DIRECTORIO_DESTINO
+	    else
+		echo "$FECHA El HASH del archivo de texto $ARCHIVO_TEXTO, no es igual al del archivo recibido $RUTA_ARCHIVO_COMPRIMIDO"
+	    fi
+	#else
+	    #echo "$FECHA El archivo $RUTA_ARCHIVO_COMPRIMIDO no existe"
+	fi
+    done
+    echo "Proximo>registro>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+   done
+
+   date2=$(date +"%s")
+   diff2=$((date2-date1))
+   if [$pasa = true]
+   then
+	$diff2=$SEGU_TIEMPO
+   fi
+done
+FECHA=$(date +%Y-%m-%d-%H:%M:%S)
+echo "$FECHA-FIN-DEL-PROCESO-script_verificar_archivos_recibidos01-1.sh"
+
+#Descomprimir y Desencriptar archivos"
+
+cd $DIRECTORIO_ORIGEN
+openssl rsautl -decrypt -inkey /opt/alsegura/cadenas/miapp/llaves/clave.pem -in /opt/alsegura/cadenas/miapp/llaves/key.enc -out /opt/alsegura/cadenas/miapp/llaves/key.txt
+for ZIP in `ls|grep .encrypted`
+    do 
+	NOMBRE_ARCHIVO_ENCRI="${ZIP%.[^.]*}"
+	openssl enc -aes-256-cbc -d -pass file:/opt/alsegura/cadenas/miapp/llaves/key.txt -in $NOMBRE_ARCHIVO_ENCRI.encrypted -out $NOMBRE_ARCHIVO_ENCRI.zip
+        	FECHA=$(date +%Y-%m-%d-%H:%M:%S)
+        	echo "$FECHA-Descomprimiendo: $ZIP"
+		for ZIP in `ls|grep .zip`
+    		do
+                chmod 750 $ZIP 
+		unzip $ZIP
+                rm $ZIP
+		echo "put *.csv" | sftp -b - $RUTA_SERVIDOR_BD$ARCHIVO_BD
+	 	done
+	mv $NOMBRE_ARCHIVO_ENCRI.encrypted $RESPALDO
+        rm $NOMBRE_ARCHIVO_ENCRI.txt
+	rm $NOMBRE_ARCHIVO_ENCRI.csv
+    done
+
+FECHA=$(date +%Y-%m-%d-%H:%M:%S)
+echo "$FECHA-FIN-DEL-PROCESO-script_descomprimir_desencriptar_archivos.sh"
+
+ssh $RUTA_SERVIDOR_BD $SH_BD
