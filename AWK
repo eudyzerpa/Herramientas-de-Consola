@@ -2,6 +2,9 @@
 cat access.log | grep GET | grep apk | grep 200 | wc -l
 
 # Lee el log de acceso de Apache2 e imprime el total de visitas
+awk '{print $1}' access.log| sort -u | wc -l
+
+# Lee el log de acceso de Apache2 e imprime el total de visitas
 awk '{print $1 }' access.log | sort -u | uniq -c | sort -rn | wc -l
 
 
