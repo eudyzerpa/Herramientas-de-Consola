@@ -1,0 +1,39 @@
+# Comando que lista todas las conexiones IPv4 establecidas
+ss -4
+
+# Comando que muestra las conexiones TCP
+ss -t
+
+# Comando que muestra las conexiones TCP e indica el número de puerto en vez del protocolo
+ss -tn
+
+# Comando que muestra todos los sockets que están en modo escucha
+ss -l
+
+# Comando que muestra todos las conexiones TCP que están en modo escucha
+ss -lt
+
+# Comando que muestra las conexiones UDP
+ss -u
+
+# Comando que muestra todos las conexiones UDP que están en modo escucha
+ss -lu
+
+# Comando que sumariza las estadísticas para todas las conexiones
+
+ss -s
+
+# Comando que lista todas las conexiones hacia una IP específica
+ss dst direcciónIP
+
+# Comando que lista todas las conexiones establecidas hacia el puerto tcp/443
+ss state established dst :443
+
+# Comando que lista todas las conexiones establecidas hacia el puerto tcp/443 y las sumariza
+ss state established dst :443 | wc -l
+
+# Comando que lista todas las conexiones con puerto destino 5228 o protocolo origen mysql
+ss -a dst :5228 or src :mysql
+
+
+
