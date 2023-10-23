@@ -1,3 +1,10 @@
 # Comando tcpdump para listar los diez equipos de la red que más tráfico están generando
 
 tcpdump -nn -c 1000 -q -s 0 | awk '{print $3}' | sort | uniq -c | sort -nr | head -n 10
+
+
+# Comando tcpdump que captura todo el tráfico entrante y saliente hacia la dirección 10.9.9.131 y guarda la salida en un archivo pcap
+tcpdump -i enp2s0 host 10.9.9.131 -w captura131020231015.pcap
+
+
+
