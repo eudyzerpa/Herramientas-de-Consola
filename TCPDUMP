@@ -1,10 +1,21 @@
 # Comando tcpdump para listar los diez equipos de la red que más tráfico están generando
-
 tcpdump -nn -c 1000 -q -s 0 | awk '{print $3}' | sort | uniq -c | sort -nr | head -n 10
 
 
-# Comando tcpdump que captura todo el tráfico entrante y saliente hacia la dirección 10.9.9.131 y guarda la salida en un archivo pcap
-tcpdump -i enp2s0 host 10.9.9.131 -w captura131020231015.pcap
+# Comando tcpdump que captura todo los paquetes de tráfico entrante y saliente cuyo host en el header sea 10.9.9.131 y guarda la salida en un archivo pcap
+tcpdump -i enp2s0 -vv host 10.9.9.131 -w captura131020231015.pcap
+
+
+# Comando tcpdump con filtro que captura todos los paquetes cuyo host origen en el header de red sea 192.168.2.10
+tcpdump -nn -i enp2s0 -vv src host 192.168.2.10
+
+
+# Comando tcpdump con filtro que captura todos los paquetes cuyo host destino en el header de red sea 192.168.2.10
+tcpdump -nn -i enp2s0 -vv dst host 192.168.2.10
+
+
+# Comando tcpdump con filtro que captura todos los paquetes con origen o destino al host 192.168.2.10 y el puerto 443 en origen o destino
+cpdump -nn -i enp2s0 -vv host 192.168.2.1 and port 443
 
 
 
