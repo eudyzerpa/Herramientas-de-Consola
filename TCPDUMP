@@ -15,7 +15,36 @@ tcpdump -nn -i enp2s0 -vv dst host 192.168.2.10
 
 
 # Comando tcpdump con filtro que captura todos los paquetes con origen o destino al host 192.168.2.10 y el puerto 443 en origen o destino
-cpdump -nn -i enp2s0 -vv host 192.168.2.1 and port 443
+tcpdump -nn -i enp2s0 -vv host 192.168.2.1 and port 443
+
+
+# Comando tcpdump con filtro que captura todos los paquetes cuyo tamaño sea mayor a 850 bytes
+tcpdump -nn -i enp2s0 -vv greater 850
+
+
+# Comando tcpdump con filtro que captura todos los paquetes cuyo tamaño sea menor a 850 bytes
+tcpdump -nn -i enp2s0 -vv less 850
+
+
+# Comando tcpdump con filtro que captura todos los paquetes cuyo tamaño sea mayor a 850 bytes, y originados en 192.168.2.10
+tcpdump -nn -i enp2s0 -vv less 850 and src host 192.168.2.10
+
+
+# Comando tcpdump con filtro que captura todos los paquetes con un tamaño en el rango de 500B y 1200B
+tcpdump -nn -i enp2s0 -vv greater 500 and less 1200
+
+
+# Comando tcpdump con filtro que captura todos los paquetes de mas de 100B cuyo origen sea o google.com.ar o microsoft.com
+tcpdump -nn -i enp2s0 -vv greater 100 and src host google.com or src host microsoft.com
+
+
+# Comando tcpdump con filtro que captura todos los paquetes de mas de 100B cuyo destino sea o google.com.ar o microsoft.com
+tcpdump -nn -i enp2s0 -vv greater 100 and dst host google.com or src host microsoft.com
+
+
+
+
+
 
 
 
