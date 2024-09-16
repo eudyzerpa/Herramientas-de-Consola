@@ -1,1 +1,2 @@
+#Como arreglar el problema de gestión de dependencias por paquetes rotos
 apt --fix-broken install
