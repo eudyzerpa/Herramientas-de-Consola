@@ -1,0 +1,202 @@
+⚠️ Aviso ético: Solo usa NMAP en redes y sistemas donde tengas autorización expresa por escrito. Escanear sin permiso es un delito en la mayoría de países.
+
+📚 BLOQUE 1: Descubrimiento de Hosts (Host Discovery)
+1️⃣ nmap -sn 192.168.1.0/24
+
+Ping Scan – Descubre qué hosts están vivos sin escanear puertos.
+
+    🔍 Uso: Reconocimiento inicial rápido de una red.
+
+    💡 Ideal para saber "quién está ahí" antes de profundizar.
+
+2️⃣ nmap -Pn 192.168.1.10
+
+No Ping – Trata al host como si estuviera vivo, saltándose el descubrimiento.
+
+    🔍 Uso: Cuando el firewall bloquea ICMP y el host parece "muerto".
+
+    💡 Muy útil contra servidores que no responden a ping.
+
+3️⃣ nmap -PS22,80,443 192.168.1.10
+
+TCP SYN Ping – Envía paquetes SYN a puertos específicos para detectar hosts.
+
+    🔍 Uso: Alternativa al ping ICMP cuando este está bloqueado.
+
+4️⃣ nmap -PE -PP 192.168.1.0/24
+
+ICMP Echo + Timestamp – Usa dos tipos de ping ICMP para mayor fiabilidad.
+
+    🔍 Uso: Descubrimiento en redes donde solo algunos ICMP pasan.
+
+5️⃣ nmap -PR 192.168.1.0/24
+
+ARP Ping – Escaneo ARP para redes locales.
+
+    🔍 Uso: El más rápido y fiable en LAN. Solo funciona en tu misma subred.
+
+📚 BLOQUE 2: Escaneo de Puertos
+6️⃣ nmap -p 80,443,22 192.168.1.10
+
+Puertos específicos – Escanea solo los puertos que le indicas.
+
+    🔍 Uso: Verificación rápida de servicios conocidos.
+
+7️⃣ nmap -p- 192.168.1.10
+
+Todos los puertos – Escanea los 65,535 puertos TCP.
+
+    🔍 Uso: Auditoría completa. ⏱️ Lento, pero exhaustivo.
+
+8️⃣ nmap -p 1-1000 192.168.1.10
+
+Rango de puertos – Escanea del 1 al 1000.
+
+    🔍 Uso: Balance entre velocidad y cobertura.
+
+9️⃣ nmap --top-ports 100 192.168.1.10
+
+Top 100 puertos – Escanea los puertos más comunes.
+
+    🔍 Uso: Reconocimiento rápido en CTFs o primeros contactos.
+
+🔟 nmap -F 192.168.1.10
+
+Fast Scan – Solo los 100 puertos más habituales.
+
+    🔍 Uso: Escaneo ultrarrápido para obtener una primera impresión.
+
+📚 BLOQUE 3: Tipos de Escaneo TCP/UDP
+1️⃣1️⃣ nmap -sS 192.168.1.10
+
+TCP SYN Scan (Half-Open) – El escaneo estrella del pentester.
+
+    🔍 Uso: Rápido y sigiloso. No completa la conexión TCP.
+
+    💡 Requiere privilegios root. El favorito en auditorías.
+
+1️⃣2️⃣ nmap -sT 192.168.1.10
+
+TCP Connect Scan – Completa el handshake TCP.
+
+    🔍 Uso: Cuando no tienes privilegios root. Más ruidoso (queda en logs).
+
+1️⃣3️⃣ nmap -sU -p 53,161 192.168.1.10
+
+UDP Scan – Escanea puertos UDP.
+
+    🔍 Uso: Detectar DNS (53), SNMP (161), DHCP (67/68). Muy lento.
+
+1️⃣4️⃣ nmap -sA 192.168.1.10
+
+ACK Scan – Determina reglas de firewall.
+
+    🔍 Uso: Saber si un firewall es stateful o stateless.
+
+1️⃣5️⃣ nmap -sN 192.168.1.10
+
+NULL Scan – Envía paquetes sin flags TCP activados.
+
+    🔍 Uso: Técnica evasiva; algunos sistemas no lo registran.
+
+1️⃣6️⃣ nmap -sX 192.168.1.10
+
+XMAS Scan – Activa flags FIN, PSH y URG.
+
+    🔍 Uso: Evasión de IDS/firewalls tradicionales.
+
+1️⃣7️⃣ nmap -sF 192.168.1.10
+
+FIN Scan – Solo flag FIN.
+
+    🔍 Uso: Similar a NULL/XMAS; útil contra sistemas UNIX.
+
+📚 BLOQUE 4: Detección de Servicios y SO
+1️⃣8️⃣ nmap -sV 192.168.1.10
+
+Version Detection – Identifica versión y producto de cada servicio.
+
+    🔍 Uso: Saber si es Apache 2.4.49 (¡y buscar CVEs!).
+
+1️⃣9️⃣ nmap -O 192.168.1.10
+
+OS Detection – Intenta identificar el sistema operativo.
+
+    🔍 Uso: Saber si es Windows, Linux, etc. No siempre acierta.
+
+2️⃣0️⃣ nmap -A 192.168.1.10
+
+Aggressive Scan – Combina -sV, -O, -sC y traceroute.
+
+    🔍 Uso: Escaneo completo en un solo comando. Muy ruidoso.
+
+2️⃣1️⃣ nmap -sC 192.168.1.10
+
+Default Scripts – Ejecuta los scripts NSE por defecto.
+
+    🔍 Uso: Detecta info adicional (títulos web, banners, SMB, etc.).
+
+2️⃣2️⃣ nmap --script vuln 192.168.1.10
+
+Scripts de Vulnerabilidades – Lanza scripts NSE de la categoría "vuln".
+
+    🔍 Uso: Detectar vulnerabilidades conocidas (MS17-010, Heartbleed...).
+
+2️⃣3️⃣ nmap --script smb-enum-shares 192.168.1.10
+
+Enumeración SMB – Lista recursos compartidos SMB.
+
+    🔍 Uso: Auditorías en redes Windows.
+
+2️⃣4️⃣ nmap --script http-enum 192.168.1.10
+
+Enumeración HTTP – Descubre rutas comunes en servidores web.
+
+    🔍 Uso: Encontrar /admin, /backup, /wp-admin, etc.
+
+📚 BLOQUE 5: Rendimiento, Evasión y Salida
+2️⃣5️⃣ nmap -T4 192.168.1.10
+
+Timing Template – Ajusta la velocidad (-T0 paranoico a -T5 loco).
+
+    🔍 Uso: -T4 es el equilibrio perfecto en pentesting.
+
+2️⃣6️⃣ nmap -f 192.168.1.10
+
+Fragmentación de paquetes – Divide los paquetes en fragmentos pequeños.
+
+    🔍 Uso: Evadir IDS/firewalls antiguos.
+
+2️⃣7️⃣ nmap -D RND:10 192.168.1.10
+
+Decoys – Usa 10 señuelos aleatorios para ocultar tu IP real.
+
+    🔍 Uso: Confundir al defensor. ⚠️ Poco fiable con firewalls modernos.
+
+2️⃣8️⃣ nmap --spoof-mac 00:11:22:33:44:55 192.168.1.10
+
+MAC Spoofing – Falsifica tu dirección MAC.
+
+    🔍 Uso: Evasión en redes locales.
+
+2️⃣9️⃣ nmap -oN scan.txt -oX scan.xml 192.168.1.10
+
+Formatos de salida – Guarda el resultado en texto y XML.
+
+    🔍 Uso: -oN texto normal, -oX XML, -oG grepable, -oA todos.
+
+    💡 El XML se importa en Metasploit, Faraday, etc.
+
+3️⃣0️⃣ nmap -iL targets.txt -oA resultado
+
+Input/Output masivo – Escanea una lista de objetivos desde archivo.
+
+    🔍 Uso: Auditorías grandes con cientos de IPs. Guarda todo en resultado.*.
+
+🎯 Consejos Finales del Profesor
+Consejo	Descripción
+🔒 Autorización	Nunca escanees sin permiso escrito.
+🐢 Empieza lento	-T2 o -T3 para no tumbar servicios frágiles.
+📝 Documenta	Guarda siempre con -oA para no repetir escaneos.
+🧪 Laboratorio	Practica en HackTheBox, TryHackMe o VMs propias.
+🕵️ Combina	nmap -sS -sV -sC -O -T4 -oA scan target es tu combo estrella.
